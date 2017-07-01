@@ -59,7 +59,7 @@ var updateData = function(){
                     url: '/boats',
                     dataType: 'json',
                     success: function(data){
-                      updateBarPlot(data);
+                      updatePage(data);
                     },
                     failure: function(result){
                       error();
@@ -83,7 +83,23 @@ function updateBarPlot(data){
     });
 }
 
+// update vote counters
+function updateVoteCounters(data){
+  $("#red-count").html(data[0]);
+  $("#blue-count").html(data[1]);
+}
+
+// update page (plot and counters)
+function updatePage(data){
+  updateBarPlot(data);
+  updateVoteCounters(data);
+}
+
 // fetch data on page load
 $(document).ready(function(){
   loadData();
+
+  setInterval(function(){
+    updateData();
+  }, 3000); // call updateData every 3000 ms
 });
