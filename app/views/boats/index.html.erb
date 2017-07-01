@@ -8,8 +8,8 @@
   </div>
 
   <div id="voting-box">
-    <%= link_to 'Vote Red', boats_path(boat: {color: 'red'}), {remote: true, method: :post, class: 'boat-button red' } %>
-    <%= link_to 'Vote Blue', boats_path(boat: {color: 'blue'}), {remote: true, method: :post, class: 'boat-button blue' } %>
+    <%= link_to 'Red Boats', boats_path(boat: {color: 'red'}), {remote: true, method: :post, class: 'boat-button red' } %>
+    <%= link_to 'Blue Boats', boats_path(boat: {color: 'blue'}), {remote: true, method: :post, class: 'boat-button blue' } %>
   </div>
   <div id="plot-container">
     <svg id="plot"></svg>
