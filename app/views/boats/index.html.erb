@@ -1,0 +1,17 @@
+<div class="main-container">
+  <h1>Red Boats vs. Blue Boats</h1>
+
+  <div id="boat-counter">
+    <h3>Boat count</h3>
+    <p>Red: <span id="red-count"><%= @boats[0] %></span></p>
+    <p>Blue: <span id="blue-count"><%= @boats[1] %></span></p>
+  </div>
+
+  <div id="voting-box">
+    <%= link_to 'Vote Red', boats_path(boat: {color: 'red'}), {remote: true, method: :post, class: 'boat-button red' } %>
+    <%= link_to 'Vote Blue', boats_path(boat: {color: 'blue'}), {remote: true, method: :post, class: 'boat-button blue' } %>
+  </div>
+  <div id="plot-container">
+    <svg id="plot"></svg>
+  </div>
+</div>
