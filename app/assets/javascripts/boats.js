@@ -95,11 +95,30 @@ function updatePage(data){
   updateVoteCounters(data);
 }
 
+////NEW PRACTICING FROM THE BOOK (back end)/////
+
+
+
+
+var dataset = [ 5, 10, 15, 20, 25 ];
 // fetch data on page load
 $(document).ready(function(){
+
   loadData();
 
   setInterval(function(){
     updateData();
-  }, 3000); // call updateData every 3000 ms
+  }, 3000);
+  // call updateData every 3000 ms
+
+  ////NEW PRACTICING FROM THE BOOK (front end)/////
+  console.log(dataset);
+  d3.select("body").selectAll("h2")
+      .data(dataset)
+      .enter()
+      .append("div")
+      .attr("class", "bar")
+      .style("height", function(d) {
+          return d + "px";
+      });
 });
