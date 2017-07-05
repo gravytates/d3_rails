@@ -98,6 +98,9 @@ function updatePage(data){
 ////NEW PRACTICING FROM THE BOOK (back end)/////
 var w = 500;
 var h = 50;
+var w2 = 500;
+var h2 = 100;
+var barPadding = 1;
 
 var dataset = [];                         //Initialize empty array
 for (var i = 0; i < 25; i++) {            //Loop 25 times
@@ -149,4 +152,21 @@ $(document).ready(function(){
     .attr("stroke-width", function(d) {
         return d/2;
     });
+
+    var svg = d3.select("body")
+            .append("svg")
+            .attr("width", w2)
+            .attr("height", h2);
+
+    svg.selectAll("rect")
+     .data(dataset)
+     .enter()
+     .append("rect")
+     .attr("x", function(d, i) {
+          return i * (w / dataset.length + barPadding);
+      })
+     .attr("y", 0)
+     .attr("width", 20)
+     .attr("height", 100);
+
 });
