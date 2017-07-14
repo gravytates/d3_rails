@@ -98,8 +98,8 @@ var w = 500;
 var h = 200;
 var w2 = 750;
 var h2 = 200;
-var w3 = 500;
-var h3 = 200;
+var w3 = 600;
+var h3 = 300;
 var barPadding = 1;
 
 var dataset = [];                         //Initialize empty array
@@ -108,19 +108,16 @@ for (var i = 0; i < 25; i++) {            //Loop 25 times
     dataset.push(newNumber);              //Add new number to array
 }
 
-var scatter = [
-                [5, 20],
-                [480, 90],
-                [250, 50],
-                [100, 33],
-                [330, 95],
-                [410, 12],
-                [475, 44],
-                [25, 67],
-                [85, 21],
-                [220, 88],
-                [600, 150]
-              ];
+
+var scatter = [];
+var numDataPoints = 20;
+var xRange = Math.random() * 1000;
+var yRange = Math.random() * 1000;
+for (var i = 0; i < numDataPoints; i++) {
+    var newNumber1 = Math.floor(Math.random() * xRange);
+    var newNumber2 = Math.floor(Math.random() * yRange);
+    scatter.push([newNumber1, newNumber2]);
+}
 // var dataset = [1,2,3,4,5];
 
 // fetch data on page load
@@ -209,7 +206,7 @@ $(document).ready(function(){
 
           // SCATTERPLOT PRACTICE
           // scaling the scatterplot
-          var padding = 20;
+          var padding = 50;
 
           var xScale = d3.scaleLinear()
           .domain([0, d3.max(scatter, function(d) { return d[0]; })])
@@ -228,6 +225,13 @@ $(document).ready(function(){
                      .range([2, 5])
                      .nice();
 
+
+         var xAxis = d3.axisBottom()
+           .scale(xScale)
+           .ticks(5);
+
+         var yAxis = d3.axisLeft()
+          .scale(yScale);
 
           //Create SVG element
         var svg = d3.select("body")
@@ -264,6 +268,19 @@ $(document).ready(function(){
           .attr("font-family", "sans-serif")
           .attr("font-size", "12px")
           .attr("fill", "red");
+
+          //  Axes are different between d3 v 3 and d3 v. 4
+
+        svg.append("g")
+          .attr("class", "axis") //Assign "axis" class
+          .attr("transform", "translate(0," + (h3 - padding) + ")")
+          .call(xAxis);
+
+        svg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(" + padding + ",0)")
+          .call(yAxis);
+
 
 
 
