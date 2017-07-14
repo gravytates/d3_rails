@@ -26,8 +26,6 @@ var plotHeight = 500;
 
 // draw bar plot
 function drawBarPlot(data){
-  console.log(data);
-
   // define linear y-axis scale
   var yScale = d3.scaleLinear()
                  .domain([0, d3.max(data)])
@@ -98,8 +96,8 @@ function updatePage(data){
 ////NEW PRACTICING FROM THE BOOK (back end)/////
 var w = 500;
 var h = 50;
-var w2 = 500;
-var h2 = 100;
+var w2 = 750;
+var h2 = 200;
 var barPadding = 1;
 
 var dataset = [];                         //Initialize empty array
@@ -120,7 +118,6 @@ $(document).ready(function(){
   // call updateData every 3000 ms
 
   ////NEW PRACTICING FROM THE BOOK (front end)/////
-  console.log(dataset);
   d3.select("body").selectAll("h2")
       .data(dataset)
       .enter()
@@ -158,15 +155,38 @@ $(document).ready(function(){
             .attr("width", w2)
             .attr("height", h2);
 
-    svg.selectAll("rect")
-     .data(dataset)
-     .enter()
-     .append("rect")
-     .attr("x", function(d, i) {
-          return i * (w / dataset.length + barPadding);
-      })
-     .attr("y", 0)
-     .attr("width", 20)
-     .attr("height", 100);
+
+      svg.selectAll("rect")
+       .data(dataset)
+       .enter()
+       .append("rect")
+       .attr("x", function(d, i) {
+          return i * (w / dataset.length + (barPadding + 25));
+       })
+       .attr("y", function(d) {
+          return h2 - (d * 4);
+       })
+       .attr("width", w / dataset.length - barPadding)
+       .attr("height", function(d) {
+          return d * 4;
+       })
+       .attr("fill", function(d) {
+            console.log(d);
+            return `rgb(0, 0, ${(d*10).toFixed()})`;
+        });
+
+        svg.selectAll("text")
+         .data(dataset)
+         .enter()
+         .append("text")
+         .text(function(d) {
+               return d.toFixed();
+          })
+          .attr("x", function(d, i) {
+               return i * (w2 / dataset.length);
+          })
+          .attr("y", function(d) {
+               return h2 - (d * 5);
+          });
 
 });
