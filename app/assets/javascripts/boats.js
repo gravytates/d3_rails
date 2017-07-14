@@ -95,7 +95,7 @@ function updatePage(data){
 
 ////NEW PRACTICING FROM THE BOOK (back end)/////
 var w = 500;
-var h = 50;
+var h = 200;
 var w2 = 750;
 var h2 = 200;
 var barPadding = 1;
@@ -105,6 +105,19 @@ for (var i = 0; i < 25; i++) {            //Loop 25 times
     var newNumber = Math.random() * 30;   //New random number (0-30)
     dataset.push(newNumber);              //Add new number to array
 }
+
+var scatter = [
+                [5, 20],
+                [480, 90],
+                [250, 50],
+                [100, 33],
+                [330, 95],
+                [410, 12],
+                [475, 44],
+                [25, 67],
+                [85, 21],
+                [220, 88]
+              ];
 // var dataset = [1,2,3,4,5];
 
 // fetch data on page load
@@ -183,10 +196,59 @@ $(document).ready(function(){
                return d.toFixed();
           })
           .attr("x", function(d, i) {
-               return i * (w2 / dataset.length);
+               return i * (w2 / dataset.length) + 5;
           })
           .attr("y", function(d) {
-               return h2 - (d * 5);
+               return h2 - (d * 5) + 15;
+          })
+          .attr("text-anchor", "middle");
+
+
+          // SCATTERPLOT PRACTICE
+          // scaling the scatterplot
+          var xScale = d3.scaleLinear()
+          .domain([0, d3.max(scatter, function(d) { return d[0]; })])
+          .range([0, w]);
+
+          var yScale = d3.scaleLinear()
+          .domain([0, d3.max(scatter, function(d) { return d[1]; })])
+          .range([0, h]);
+
+          //Create SVG element
+        var svg = d3.select("body")
+                    .append("svg")
+                    .attr("width", w)
+                    .attr("height", h);
+        svg.selectAll("circle")  // <-- No longer "rect"
+         .data(scatter)
+         .enter()
+         .append("circle")
+         .attr("cx", function(d) {
+               return xScale(d[0]);
+          })
+          .attr("cy", function(d) {
+               return yScale(d[1]);
+          })
+          .attr("r", function(d) {
+              return Math.sqrt(h - d[1]);
           });
+        svg.selectAll("text")  // <-- Note "text", not "circle" or "rect"
+         .data(scatter)
+         .enter()
+         .append("text")
+         .text(function(d) {
+               return d[0] + "," + d[1];
+          })
+          .attr("x", function(d) {
+               return xScale(d[0]);
+          })
+          .attr("y", function(d) {
+               return xScale(d[1]);
+          })
+          .attr("font-family", "sans-serif")
+          .attr("font-size", "11px")
+          .attr("fill", "red");
+
+
 
 });
