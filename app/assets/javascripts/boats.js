@@ -252,22 +252,22 @@ $(document).ready(function(){
               return rScale(d[1]);
           });
 
-        svg.selectAll("text")  // <-- Note "text", not "circle" or "rect"
-         .data(scatter)
-         .enter()
-         .append("text")
-         .text(function(d) {
-               return d[0] + "," + d[1];
-          })
-          .attr("x", function(d) {
-               return xScale(d[0]);
-          })
-          .attr("y", function(d) {
-               return yScale(d[1]);
-          })
-          .attr("font-family", "sans-serif")
-          .attr("font-size", "12px")
-          .attr("fill", "red");
+        // svg.selectAll("text")  // <-- Note "text", not "circle" or "rect"
+        //  .data(scatter)
+        //  .enter()
+        //  .append("text")
+        //  .text(function(d) {
+        //        return d[0] + "," + d[1];
+        //   })
+        //   .attr("x", function(d) {
+        //        return xScale(d[0]);
+        //   })
+        //   .attr("y", function(d) {
+        //        return yScale(d[1]);
+        //   })
+        //   .attr("font-family", "sans-serif")
+        //   .attr("font-size", "12px")
+        //   .attr("fill", "red");
 
           //  Axes are different between d3 v 3 and d3 v. 4
 
