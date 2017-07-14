@@ -98,6 +98,8 @@ var w = 500;
 var h = 200;
 var w2 = 750;
 var h2 = 200;
+var w3 = 500;
+var h3 = 200;
 var barPadding = 1;
 
 var dataset = [];                         //Initialize empty array
@@ -116,7 +118,8 @@ var scatter = [
                 [475, 44],
                 [25, 67],
                 [85, 21],
-                [220, 88]
+                [220, 88],
+                [600, 150]
               ];
 // var dataset = [1,2,3,4,5];
 
@@ -206,19 +209,31 @@ $(document).ready(function(){
 
           // SCATTERPLOT PRACTICE
           // scaling the scatterplot
+          var padding = 20;
+
           var xScale = d3.scaleLinear()
           .domain([0, d3.max(scatter, function(d) { return d[0]; })])
-          .range([0, w]);
+          .range([padding, w3 - padding])
+          .nice();
 
           var yScale = d3.scaleLinear()
           .domain([0, d3.max(scatter, function(d) { return d[1]; })])
-          .range([0, h]);
+          .range([h3 - padding, padding])
+          .nice();
+
+
+          // scaling radii of data
+          var rScale = d3.scaleLinear()
+                     .domain([0, d3.max(scatter, function(d) { return d[1]; })])
+                     .range([2, 5])
+                     .nice();
+
 
           //Create SVG element
         var svg = d3.select("body")
                     .append("svg")
-                    .attr("width", w)
-                    .attr("height", h);
+                    .attr("width", w3)
+                    .attr("height", h3);
         svg.selectAll("circle")  // <-- No longer "rect"
          .data(scatter)
          .enter()
@@ -230,8 +245,9 @@ $(document).ready(function(){
                return yScale(d[1]);
           })
           .attr("r", function(d) {
-              return Math.sqrt(h - d[1]);
+              return rScale(d[1]);
           });
+
         svg.selectAll("text")  // <-- Note "text", not "circle" or "rect"
          .data(scatter)
          .enter()
@@ -243,11 +259,12 @@ $(document).ready(function(){
                return xScale(d[0]);
           })
           .attr("y", function(d) {
-               return xScale(d[1]);
+               return yScale(d[1]);
           })
           .attr("font-family", "sans-serif")
-          .attr("font-size", "11px")
+          .attr("font-size", "12px")
           .attr("fill", "red");
+
 
 
 
