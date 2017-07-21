@@ -131,37 +131,50 @@ $(document).ready(function(){
   // call updateData every 3000 ms
 
   ////NEW PRACTICING FROM THE BOOK (front end)/////
-  d3.select("body").selectAll("h2")
-      .data(dataset)
-      .enter()
-      .append("div")
-      .attr("class", "bar")
-      .style("height", function(d) {
-          var barheight = d * 5;
-          return barheight + "px";
-      });
+  // d3.select("body").selectAll("h2")
+  //     .data(dataset)
+  //     .enter()
+  //     .append("div")
+  //     .attr("class", "bar")
+  //     .style("height", function(d) {
+  //         var barheight = d * 5;
+  //         return barheight + "px";
+  //     });
   var svg = d3.select("body")
             .append("svg")
             .attr("width", w)   // <-- Here
             .attr("height", h);
 
-  var circles = svg.selectAll("circle")
-    .data(dataset)
-    .enter()
-    .append("circle");
 
-  circles.attr("cx", function(d, i) {
-          return (i * 50) + 25;
-      })
-     .attr("cy", h/2)
-     .attr("r", function(d) {
-          return d/1.5;
-     })
-     .attr("fill", "green")
-    .attr("stroke", "red")
-    .attr("stroke-width", function(d) {
-        return d/2;
-    });
+  // circles?
+
+  // var circles = svg.selectAll("circle")
+  //   .data(dataset)
+  //   .enter()
+  //   .append("circle");
+  //
+  // circles.attr("cx", function(d, i) {
+  //         return (i * 50) + 25;
+  //     })
+  //    .attr("cy", h/2)
+  //    .attr("r", function(d) {
+  //         return d/1.5;
+  //    })
+  //    .attr("fill", "green")
+  //   .attr("stroke", "red")
+  //   .attr("stroke-width", function(d) {
+  //       return d/2;
+  //   });
+
+  var xscalez = d3.scaleBand()
+              .domain(d3.range(dataset.length))
+              .rangeRound([0, w2], 0.05)
+              .paddingInner(0.05);
+
+
+	var yscalez = d3.scaleLinear()
+    					.domain([0, d3.max(dataset)])
+    					.range([0, h]);
 
     var svg = d3.select("body")
             .append("svg")
@@ -169,88 +182,89 @@ $(document).ready(function(){
             .attr("height", h2);
 
 
-      svg.selectAll("rect")
-       .data(dataset)
-       .enter()
-       .append("rect")
-       .attr("x", function(d, i) {
-          return i * (w / dataset.length + (barPadding + 25));
-       })
-       .attr("y", function(d) {
-          return h2 - (d * 4);
-       })
-       .attr("width", w / dataset.length - barPadding)
-       .attr("height", function(d) {
-          return d * 4;
-       })
-       .attr("fill", function(d) {
-            console.log(d);
-            return `rgb(0, 0, ${(d*10).toFixed()})`;
-        });
+        svg.selectAll("rect")
+           .data(dataset)
+           .enter()
+           .append("rect")
+           .attr("x", function(d, i) {
+              return xscalez(i);         // <-- Set x values
+           })
+           .attr("y", function(d) {
+   			   		return h - yscalez(d);
+   			   })
+   			   .attr("width", xscalez.bandwidth())
+   			   .attr("height", function(d) {
+   			   		return yscalez(d);
+   			   })
+   			   .attr("fill", function(d) {
+   					return "rgb(0, 0, " + Math.round(d * 10) + ")";
+   			   });
 
-        svg.selectAll("text")
-         .data(dataset)
-         .enter()
-         .append("text")
-         .text(function(d) {
-               return d.toFixed();
-          })
-          .attr("x", function(d, i) {
-               return i * (w2 / dataset.length) + 5;
-          })
-          .attr("y", function(d) {
-               return h2 - (d * 5) + 15;
-          })
-          .attr("text-anchor", "middle");
+
+        // Text Stuff
+        // svg.selectAll("text")
+        //  .data(dataset)
+        //  .enter()
+        //  .append("text")
+        //  .text(function(d) {
+        //        return d.toFixed();
+        //   })
+        //   .attr("x", function(d, i) {
+        //        return i * (w2 / dataset.length) + 5;
+        //   })
+        //   .attr("y", function(d) {
+        //        return h2 - (d * 5) + 15;
+        //   })
+        //   .attr("text-anchor", "middle");
 
 
           // SCATTERPLOT PRACTICE
           // scaling the scatterplot
-          var padding = 50;
-
-          var xScale = d3.scaleLinear()
-          .domain([0, d3.max(scatter, function(d) { return d[0]; })])
-          .range([padding, w3 - padding])
-          .nice();
-
-          var yScale = d3.scaleLinear()
-          .domain([0, d3.max(scatter, function(d) { return d[1]; })])
-          .range([h3 - padding, padding])
-          .nice();
-
-
-          // scaling radii of data
-          var rScale = d3.scaleLinear()
-                     .domain([0, d3.max(scatter, function(d) { return d[1]; })])
-                     .range([2, 5])
-                     .nice();
-
-
-         var xAxis = d3.axisBottom()
-           .scale(xScale)
-           .ticks(5);
-
-         var yAxis = d3.axisLeft()
-          .scale(yScale);
+        //   var padding = 50;
+         //
+        //   var xScale = d3.scaleLinear()
+        //   .domain([0, d3.max(scatter, function(d) { return d[0]; })])
+        //   .range([padding, w3 - padding])
+        //   .nice();
+         //
+        //   var yScale = d3.scaleLinear()
+        //   .domain([0, d3.max(scatter, function(d) { return d[1]; })])
+        //   .range([h3 - padding, padding])
+        //   .nice();
+         //
+         //
+        //   // scaling radii of data
+        //   var rScale = d3.scaleLinear()
+        //              .domain([0, d3.max(scatter, function(d) { return d[1]; })])
+        //              .range([2, 5])
+        //              .nice();
+         //
+         //
+        //  var xAxis = d3.axisBottom()
+        //    .scale(xScale)
+        //    .ticks(5);
+         //
+        //  var yAxis = d3.axisLeft()
+        //   .scale(yScale);
 
           //Create SVG element
-        var svg = d3.select("body")
-                    .append("svg")
-                    .attr("width", w3)
-                    .attr("height", h3);
-        svg.selectAll("circle")  // <-- No longer "rect"
-         .data(scatter)
-         .enter()
-         .append("circle")
-         .attr("cx", function(d) {
-               return xScale(d[0]);
-          })
-          .attr("cy", function(d) {
-               return yScale(d[1]);
-          })
-          .attr("r", function(d) {
-              return rScale(d[1]);
-          });
+        // var svg = d3.select("body")
+        //             .append("svg")
+        //             .attr("width", w3)
+        //             .attr("height", h3);
+        // svg.selectAll("circle")  // <-- No longer "rect"
+        //  .data(scatter)
+        //  .enter()
+        //  .append("circle")
+        //  .attr("cx", function(d) {
+        //        return xScale(d[0]);
+        //   })
+        //   .attr("cy", function(d) {
+        //        return yScale(d[1]);
+        //   })
+        //   .attr("r", function(d) {
+        //       return rScale(d[1]);
+        //   });
 
         // svg.selectAll("text")  // <-- Note "text", not "circle" or "rect"
         //  .data(scatter)
@@ -271,15 +285,36 @@ $(document).ready(function(){
 
           //  Axes are different between d3 v 3 and d3 v. 4
 
-        svg.append("g")
-          .attr("class", "axis") //Assign "axis" class
-          .attr("transform", "translate(0," + (h3 - padding) + ")")
-          .call(xAxis);
+        // svg.append("g")
+        //   .attr("class", "axis") //Assign "axis" class
+        //   .attr("transform", "translate(0," + (h3 - padding) + ")")
+        //   .call(xAxis);
+        //
+        // svg.append("g")
+        //   .attr("class", "axis")
+        //   .attr("transform", "translate(" + padding + ",0)")
+        //   .call(yAxis);
 
-        svg.append("g")
-          .attr("class", "axis")
-          .attr("transform", "translate(" + padding + ",0)")
-          .call(yAxis);
+        d3.select("p")
+          .on("click", function() {
+            dataset = [ 11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
+                        5, 10, 13, 19, 21, 25, 22, 18, 15, 13 ];
+
+            //Update all rects
+            svg.selectAll("rect")
+            					   .data(dataset)
+                          .transition()
+            					   .attr("y", function(d) {
+            					   		return h2 - yscalez(d);
+            					   })
+            					   .attr("height", function(d) {
+            					   		return yscalez(d);
+            					   })
+            					   .attr("fill", function(d) {
+            							return "rgb(0, 0, " + Math.round(d * 10) + ")";
+            					   });
+
+             });
 
 
 
