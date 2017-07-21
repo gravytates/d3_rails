@@ -168,7 +168,7 @@ $(document).ready(function(){
 
   var xscalez = d3.scaleBand()
               .domain(d3.range(dataset.length))
-              .rangeRound([0, w2], 0.05)
+              .rangeRound([0, w2], 0.1)
               .paddingInner(0.05);
 
 
@@ -299,11 +299,21 @@ $(document).ready(function(){
           .on("click", function() {
             dataset = [ 11, 12, 15, 20, 18, 17, 16, 18, 23, 25,
                         5, 10, 13, 19, 21, 25, 22, 18, 15, 13 ];
+            var numValues = dataset.length;               //Count original length of dataset
+            dataset = [];                                       //Initialize empty array
+            for (var i = 0; i < numValues; i++) {               //Loop numValues times
+                var newNumber = Math.floor(Math.random() * 25); //New random integer (0-24)
+                dataset.push(newNumber);
+              }
 
             //Update all rects
             svg.selectAll("rect")
             					   .data(dataset)
                           .transition()
+                          .delay(function(d, i) {
+                              return i * 100;
+                          })
+                          .duration(1000)
             					   .attr("y", function(d) {
             					   		return h2 - yscalez(d);
             					   })
@@ -313,6 +323,7 @@ $(document).ready(function(){
             					   .attr("fill", function(d) {
             							return "rgb(0, 0, " + Math.round(d * 10) + ")";
             					   });
+
 
              });
 
